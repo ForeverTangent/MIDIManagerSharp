@@ -1,2 +1,3 @@
 # MIDIManagerSharp
-A Swift MIDI Manager
+
+A description of this package.
