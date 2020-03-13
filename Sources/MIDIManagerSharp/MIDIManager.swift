@@ -16,7 +16,7 @@ import AVFoundation
 import os
 
 
-protocol MIDIManagerDelegate {
+public protocol MIDIManagerDelegate {
 	func scheduleAMIDINote(on: Bool, noteNumber: UInt8, at velocity: UInt8)
 	func scheduleACCFor(_ cc: UInt8, with data: UInt8)
 	func scheduleAPitchBendWith(lsb: UInt8, msb: UInt8)
@@ -25,7 +25,7 @@ protocol MIDIManagerDelegate {
 
 /// The `Singleton` instance
 @available(iOS 10.0, *)
-class MIDIManager {
+public class MIDIManager {
 
 	// MARK: - Propeties
 
@@ -52,19 +52,19 @@ class MIDIManager {
 
 	// MARK: - Inits
 
-	init() {
+	public init() {
 		// initializer code here
 	}
 
 	// MARK: - Class Methods
 
-	func deInitMIDI() {
+	public func deInitMIDI() {
 		removeNotifications()
 		disableNetwork()
 		os_log("DE-initializing MIDI", log: MIDIManager.midiLog, type: .debug)
 	}
 
-	func initMIDI(midiNotifier: MIDINotifyBlock? = nil, reader: MIDIReadBlock? = nil) {
+	public func initMIDI(midiNotifier: MIDINotifyBlock? = nil, reader: MIDIReadBlock? = nil) {
 
 		os_log("Initializing MIDI", log: MIDIManager.midiLog, type: .debug)
 
@@ -168,7 +168,7 @@ class MIDIManager {
 
 	}
 
-	func observeNotifications() {
+	public func observeNotifications() {
 		//		NotificationCenter.default.addObserver(self,
 		//											   selector: #selector(midiNetworkChanged(notification:)),
 		//											   name:NSNotification.Name(rawValue: MIDINetworkNotificationSessionDidChange),
@@ -180,7 +180,7 @@ class MIDIManager {
 	}
 
 
-	func removeNotifications() {
+	public func removeNotifications() {
 		//		NotificationCenter.default.removeObserver(self,
 		//												  name: NSNotification.Name(rawValue: MIDINetworkNotificationSessionDidChange),
 		//												  object: nil)
@@ -192,7 +192,7 @@ class MIDIManager {
 
 
 	// signifies that other aspects of the session changed, such as the connection list, connection policy
-	@objc func midiNetworkChanged(notification:NSNotification) {
+	@objc public func midiNetworkChanged(notification:NSNotification) {
 		//		print("\(#function)")
 		//		print("\(notification)")
 		//		if let session = notification.object as? MIDINetworkSession {
@@ -216,7 +216,7 @@ class MIDIManager {
 		//		}
 	}
 
-	@objc func midiNetworkContactsChanged(notification:NSNotification) {
+	@objc public func midiNetworkContactsChanged(notification:NSNotification) {
 		//		print("\(#function)")
 		//		print("\(notification)")
 		//		if let session = notification.object as? MIDINetworkSession {
@@ -228,7 +228,7 @@ class MIDIManager {
 	}
 
 
-	func showMIDIObjectType(_ ot: MIDIObjectType) {
+	public func showMIDIObjectType(_ ot: MIDIObjectType) {
 		switch ot {
 			case .other:
 				os_log("midiObjectType: Other", log: MIDIManager.midiLog, type: .debug)
@@ -273,7 +273,7 @@ class MIDIManager {
 	}
 
 
-	func handleMIDI(_ packet:MIDIPacket) {
+	public func handleMIDI(_ packet:MIDIPacket) {
 
 		let status = packet.data.0
 		let d1 = packet.data.1
@@ -319,7 +319,7 @@ class MIDIManager {
 
 
 	//typealias MIDINotifyBlock = (UnsafePointer<MIDINotification>) -> Void
-	func MyMIDINotifyBlock(midiNotification: UnsafePointer<MIDINotification>) {
+	public func MyMIDINotifyBlock(midiNotification: UnsafePointer<MIDINotification>) {
 		// print("\ngot a MIDINotification!")
 
 		let notification = midiNotification.pointee
@@ -429,13 +429,13 @@ class MIDIManager {
 		}
 	}
 
-	func MIDIPassThru(_ packetList: UnsafePointer<MIDIPacketList>, srcConnRefCon: UnsafeMutableRawPointer?) -> Swift.Void {
+	public func MIDIPassThru(_ packetList: UnsafePointer<MIDIPacketList>, srcConnRefCon: UnsafeMutableRawPointer?) -> Swift.Void {
 		MIDIReceived(virtualSourceEndpointRef, packetList)
 	}
 
 
 
-	func MyMIDIReadBlock(packetList: UnsafePointer<MIDIPacketList>, srcConnRefCon: UnsafeMutableRawPointer?) -> Swift.Void {
+	public func MyMIDIReadBlock(packetList: UnsafePointer<MIDIPacketList>, srcConnRefCon: UnsafeMutableRawPointer?) -> Swift.Void {
 
 		let packets = packetList.pointee
 
@@ -460,7 +460,7 @@ class MIDIManager {
 		}
 	}
 
-	func enableNetwork() {
+	public func enableNetwork() {
 		MIDINetworkSession.default().isEnabled = true
 		MIDINetworkSession.default().connectionPolicy = .anyone
 
@@ -471,14 +471,14 @@ class MIDIManager {
 
 	}
 
-	func disableNetwork() {
+	public func disableNetwork() {
 		MIDINetworkSession.default().connectionPolicy = .noOne
 		MIDINetworkSession.default().isEnabled = false
 
 		// print("net session enabled \(MIDINetworkSession.default().isEnabled)")
 	}
 
-	func connectSourcesToInputPort() {
+	public func connectSourcesToInputPort() {
 		let sourceCount = MIDIGetNumberOfSources()
 		// print("source count \(sourceCount)")
 
@@ -498,7 +498,7 @@ class MIDIManager {
 		}
 	}
 
-	func disconnectSourceFromInputPort(_ sourceMidiEndPoint:MIDIEndpointRef) -> OSStatus {
+	public func disconnectSourceFromInputPort(_ sourceMidiEndPoint:MIDIEndpointRef) -> OSStatus {
 		let status = MIDIPortDisconnectSource(inputPort,
 											  sourceMidiEndPoint
 		)
@@ -512,7 +512,7 @@ class MIDIManager {
 	}
 
 
-	func getDeviceName(_ endpoint:MIDIEndpointRef) -> String? {
+	public func getDeviceName(_ endpoint:MIDIEndpointRef) -> String? {
 		var cfs: Unmanaged<CFString>?
 		let status = MIDIObjectGetStringProperty(endpoint, kMIDIPropertyName, &cfs)
 		if status != noErr {
@@ -527,7 +527,7 @@ class MIDIManager {
 		return nil
 	}
 
-	func allExternalDeviceProps() {
+	public func allExternalDeviceProps() {
 
 		let n = MIDIGetNumberOfExternalDevices()
 		os_log("external devices %d", log: MIDIManager.midiLog, type: .debug, n)
@@ -538,7 +538,7 @@ class MIDIManager {
 		}
 	}
 
-	func allDeviceProps() {
+	public func allDeviceProps() {
 
 		let n = MIDIGetNumberOfDevices()
 		os_log("number of devices %d", log: MIDIManager.midiLog, type: .debug, n)
@@ -549,7 +549,7 @@ class MIDIManager {
 		}
 	}
 
-	func allDestinationProps() {
+	public func allDestinationProps() {
 		let numberOfDestinations  = MIDIGetNumberOfDestinations()
 		os_log("destinations %d", log: MIDIManager.midiLog, type: .debug, numberOfDestinations)
 
@@ -559,7 +559,7 @@ class MIDIManager {
 		}
 	}
 
-	func allSourceProps() {
+	public func allSourceProps() {
 		let numberOfSources  = MIDIGetNumberOfSources()
 		os_log("numberOfSources %d", log: MIDIManager.midiLog, type: .debug, numberOfSources)
 
@@ -569,7 +569,7 @@ class MIDIManager {
 		}
 	}
 
-	func printProperties(_ midiobject:MIDIObjectRef) {
+	public func printProperties(_ midiobject:MIDIObjectRef) {
 		var unmanagedProperties: Unmanaged<CFPropertyList>?
 		let status = MIDIObjectGetProperties(midiobject, &unmanagedProperties, true)
 		checkError(status)
@@ -589,7 +589,7 @@ class MIDIManager {
 		}
 	}
 
-	func propertyValue(_ midiobject:MIDIObjectRef, propName:String) -> String? {
+	public func propertyValue(_ midiobject:MIDIObjectRef, propName:String) -> String? {
 		var unmanagedProperties: Unmanaged<CFPropertyList>?
 		let status = MIDIObjectGetProperties(midiobject, &unmanagedProperties, true)
 		checkError(status)
@@ -607,7 +607,7 @@ class MIDIManager {
 	}
 
 
-	func playNoteOn(_ channel:UInt32, noteNum:UInt32, velocity:UInt32)    {
+	public func playNoteOn(_ channel:UInt32, noteNum:UInt32, velocity:UInt32)    {
 		//		let noteCommand = UInt32(0x90 | channel)
 
 		midiManagerDelegate?.scheduleAMIDINote(on: true, noteNumber: UInt8(noteNum), at: UInt8(velocity))
@@ -615,7 +615,7 @@ class MIDIManager {
 		// print("\(noteCommand)")
 	}
 
-	func playNoteOff(_ channel:UInt32, noteNum:UInt32)    {
+	public func playNoteOff(_ channel:UInt32, noteNum:UInt32)    {
 		//		let noteCommand = UInt32(0x80 | channel)
 
 		midiManagerDelegate?.scheduleAMIDINote(on: false, noteNumber: UInt8(noteNum), at: 0)
@@ -624,7 +624,7 @@ class MIDIManager {
 
 	}
 
-	func performCCOn(_ channel:UInt32, cc:UInt32, cc_value:UInt32)    {
+	public func performCCOn(_ channel:UInt32, cc:UInt32, cc_value:UInt32)    {
 		//		let midiCommand = UInt32(0xB0 | channel)
 
 		midiManagerDelegate?.scheduleACCFor(UInt8(cc), with: UInt8(cc_value))
@@ -632,7 +632,7 @@ class MIDIManager {
 		// print("CC \(midiCommand) \(cc_value)")
 	}
 
-	func performPitchBendOn(_ channel:UInt32, withLSB lsb:UInt32, andMSB msb:UInt32)    {
+	public func performPitchBendOn(_ channel:UInt32, withLSB lsb:UInt32, andMSB msb:UInt32)    {
 		//		let midiCommand = UInt32(0xE0 | channel)
 
 		midiManagerDelegate?.scheduleAPitchBendWith(lsb: UInt8(lsb), msb: UInt8(msb))
@@ -834,7 +834,7 @@ class MIDIManager {
 	///  - parameter status: an `OSStatus` containing the encoded 4char.
 	///
 	///  - returns: The String representation. Might be nil.
-	class func stringFrom4(status: OSStatus) -> String? {
+	public class func stringFrom4(status: OSStatus) -> String? {
 		let n = Int(status)
 		return stringFrom4(status:OSStatus(n))
 	}
