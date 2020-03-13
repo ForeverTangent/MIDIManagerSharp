@@ -3,4 +3,5 @@
 /Packages
 /*.xcodeproj
 xcuserdata/
-MIDIManagerSharp/BUILDS
+BUILDS
+.swiftpm
