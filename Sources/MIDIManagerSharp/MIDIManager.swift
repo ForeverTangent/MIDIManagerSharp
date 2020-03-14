@@ -309,7 +309,51 @@ public class MIDIManager {
 			case 0xE0:
 				// print("Pitch Bend Change. Channel \(channel) lsb \(d1) msb \(d2)")
 				performPitchBendOn(UInt32(channel), withLSB: UInt32(d1), andMSB: UInt32(d2))
-
+			case 0xF0:
+				// print("Start of System Exclusive Message")
+				break
+			case 0xF1:
+				// print("MIDI Time Code Quarter Frame (Sys Common)")
+				break
+			case 0xF2:
+				// print("Song Position Pointer (Sys Common)")
+				break
+			case 0xF3:
+				// print("Song Select (Sys Common)")
+				break
+			case 0xF4:
+				// print("???")
+				break
+			case 0xF5:
+				// print("???")
+				break
+			case 0xF6:
+				// print("Tune Request (Sys Common)")
+				break
+			case 0xF7:
+				// print("End of System Exclusive Message")
+				break
+			case 0xF8:
+				// print("Timing Clock (Sys Realtime)")
+				break
+			case 0xFA:
+				// print("Start (Sys Realtime)")
+				break
+			case 0xFB:
+				// print("Continue (Sys Realtime)")
+				break
+			case 0xFC:
+				// print("Stop (Sys Realtime)")
+				break
+			case 0xFD:
+				// print("???")
+				break
+			case 0xFE:
+				// print("Active Sensing (Sys Realtime)")
+				break
+			case 0xFF:
+				// print("System Reset (Sys Realtime)")
+				break
 			default:
 				print("Unhandled message \(status)")
 				break
