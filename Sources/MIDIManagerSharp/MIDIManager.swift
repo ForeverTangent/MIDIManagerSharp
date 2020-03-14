@@ -17,9 +17,9 @@ import os
 
 
 public protocol MIDIManagerDelegate {
-	func scheduleAMIDINote(on: Bool, noteNumber: UInt8, at velocity: UInt8)
-	func scheduleACCFor(_ cc: UInt8, with data: UInt8)
-	func scheduleAPitchBendWith(lsb: UInt8, msb: UInt8)
+	func scheduleMIDINote(on: Bool, noteNumber: UInt8, at velocity: UInt8)
+	func scheduleCCFor(_ cc: UInt8, with data: UInt8)
+	func schedulePitchBendWith(lsb: UInt8, msb: UInt8)
 }
 
 
@@ -654,7 +654,7 @@ public class MIDIManager {
 	public func playNoteOn(_ channel:UInt32, noteNum:UInt32, velocity:UInt32)    {
 		//		let noteCommand = UInt32(0x90 | channel)
 
-		midiManagerDelegate?.scheduleAMIDINote(on: true, noteNumber: UInt8(noteNum), at: UInt8(velocity))
+		midiManagerDelegate?.scheduleMIDINote(on: true, noteNumber: UInt8(noteNum), at: UInt8(velocity))
 
 		// print("\(noteCommand)")
 	}
@@ -662,7 +662,7 @@ public class MIDIManager {
 	public func playNoteOff(_ channel:UInt32, noteNum:UInt32)    {
 		//		let noteCommand = UInt32(0x80 | channel)
 
-		midiManagerDelegate?.scheduleAMIDINote(on: false, noteNumber: UInt8(noteNum), at: 0)
+		midiManagerDelegate?.scheduleMIDINote(on: false, noteNumber: UInt8(noteNum), at: 0)
 
 		// print("\(noteCommand)")
 
@@ -671,7 +671,7 @@ public class MIDIManager {
 	public func performCCOn(_ channel:UInt32, cc:UInt32, cc_value:UInt32)    {
 		//		let midiCommand = UInt32(0xB0 | channel)
 
-		midiManagerDelegate?.scheduleACCFor(UInt8(cc), with: UInt8(cc_value))
+		midiManagerDelegate?.scheduleCCFor(UInt8(cc), with: UInt8(cc_value))
 
 		// print("CC \(midiCommand) \(cc_value)")
 	}
@@ -679,7 +679,7 @@ public class MIDIManager {
 	public func performPitchBendOn(_ channel:UInt32, withLSB lsb:UInt32, andMSB msb:UInt32)    {
 		//		let midiCommand = UInt32(0xE0 | channel)
 
-		midiManagerDelegate?.scheduleAPitchBendWith(lsb: UInt8(lsb), msb: UInt8(msb))
+		midiManagerDelegate?.schedulePitchBendWith(lsb: UInt8(lsb), msb: UInt8(msb))
 		// print("Pitchbend \(midiCommand) \(lsb) \(msb)")
 	}
 
