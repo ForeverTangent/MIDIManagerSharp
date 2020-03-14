@@ -29,26 +29,26 @@ public class MIDIManager {
 
 	// MARK: - Propeties
 
-	static let shared = MIDIManager()
-	static let subsystem = "MIDIManager"
-	static let category = "MIDI"
-	static let midiLog = OSLog(subsystem: subsystem, category: category)
+	public static let shared = MIDIManager()
+	public static let subsystem = "MIDIManager"
+	public static let category = "MIDI"
+	public static let midiLog = OSLog(subsystem: subsystem, category: category)
 
-	var midiClient = MIDIClientRef()
+	public var midiClient = MIDIClientRef()
 
-	var outputPort = MIDIPortRef()
+	public var outputPort = MIDIPortRef()
 
-	var inputPort = MIDIPortRef()
+	public var inputPort = MIDIPortRef()
 
-	var virtualSourceEndpointRef = MIDIEndpointRef()
+	public var virtualSourceEndpointRef = MIDIEndpointRef()
 
-	var virtualDestinationEndpointRef = MIDIEndpointRef()
+	public var virtualDestinationEndpointRef = MIDIEndpointRef()
 
-	var midiInputPortRef = MIDIPortRef()
+	public var midiInputPortRef = MIDIPortRef()
 
-	var processingGraph:AUGraph?
+	public var processingGraph:AUGraph?
 
-	var midiManagerDelegate: MIDIManagerDelegate?
+	public var midiManagerDelegate: MIDIManagerDelegate?
 
 	// MARK: - Inits
 
